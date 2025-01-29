@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use http\Encoding\Stream\Deflate;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
@@ -38,6 +39,9 @@ class Comment
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photoFilename = null;
+
+    #[ORM\Column(length: 255, options: ['default' => 'submitted'])]
+    private ?string $state = 'submitted';
 
     #[ORM\PrePersist]
     public function setCreatedAtValue()
@@ -119,6 +123,18 @@ class Comment
     public function setPhotoFilename(?string $photoFilename): Comment
     {
         $this->photoFilename = $photoFilename;
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): static
+    {
+        $this->state = $state;
+
         return $this;
     }
 }
