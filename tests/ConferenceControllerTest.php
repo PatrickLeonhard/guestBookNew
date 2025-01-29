@@ -13,4 +13,16 @@ class ConferenceControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h2', 'Give your feedback');
     }
+    public function testConferencePage()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/');
+
+        $this->assertCount(1, $crawler->filter('h2'));
+        $client->clickLink('View');
+
+        $this->assertPageTitleContains('Paris');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h2', 'Paris');
+    }
 }
